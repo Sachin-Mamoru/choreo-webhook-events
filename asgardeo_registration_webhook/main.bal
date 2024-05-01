@@ -34,7 +34,7 @@ service asgardeo:RegistrationService on webhookListener {
 
         log:printInfo(event.toJsonString());
         log:printInfo("User Added Successfully. User ID : ");
-        log:printInfo(event.get("userName").toString());
+        // log:printInfo(event.get("userName").toString());
 
         record {} leadRecord = {
             "Email": check event.eventData.toJson().userName,
