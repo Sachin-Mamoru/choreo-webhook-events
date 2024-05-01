@@ -37,7 +37,7 @@ service asgardeo:RegistrationService on webhookListener {
         log:printInfo(event.get("userName").toString());
 
         record {} leadRecord = {
-            "Email": event.get("userName"),
+            "Email": check event.eventData.toJson().userName,
             "Company": "WSO2123",
             "FirstName": "L1 First Name",
             "LastName": "L1 Last Name"
