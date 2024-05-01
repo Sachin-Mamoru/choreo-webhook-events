@@ -32,11 +32,14 @@ service asgardeo:RegistrationService on webhookListener {
 
         salesforce:Client baseClient = check new (sfConfig);
 
+        log:printInfo(event.toJsonString());
+        log:printInfo("User Added Successfully. User ID : ");
+
         record {} leadRecord = {
             "Email": event.get("userName"),
-            "Company": "WSO2",
-            "FirstName": "Lead First Name",
-            "LastName": "Lead Last Name"
+            "Company": "WSO2123",
+            "FirstName": "L1 First Name",
+            "LastName": "L1 Last Name"
         };
 
         salesforce:CreationResponse|error res = baseClient->create("Lead", leadRecord);
