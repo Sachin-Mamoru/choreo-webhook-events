@@ -34,13 +34,23 @@ service asgardeo:RegistrationService on webhookListener {
 
         log:printInfo(event.toJsonString());
         log:printInfo("User Added Successfully. User ID : ");
-        // log:printInfo(event.get("userName").toString());
+        
+
+        json jsonResult = event.eventData.toJson();
+        string userName = check jsonResult.userName;
+        string email = check jsonResult.email;
+        // string firstName = check jsonResult[];
+
+        map<json> mj = <map<json>> jsonResult;
+        map<json> user = <map<json>> mj.get("claims");
+
+        log:printInfo("User Name : " + <string>user["http://wso2.org/claims/lastname"]);
 
         record {} leadRecord = {
             "Email": check event.eventData.toJson().userName,
-            "Company": "WSO2123",
-            "FirstName": "L1 First Name",
-            "LastName": "L1 Last Name"
+            "Company": check event.eventData.toJson().userName,
+            "FirstName": check event.eventData.toJson().claims,
+            "LastName": check event.eventData.toJson().userName
         };
 
         salesforce:CreationResponse|error res = baseClient->create("Lead", leadRecord);
