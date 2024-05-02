@@ -37,9 +37,6 @@ service asgardeo:RegistrationService on webhookListener {
         
 
         json jsonResult = event.eventData.toJson();
-        string userName = check jsonResult.userName;
-        string email = check jsonResult.email;
-        // string firstName = check jsonResult[];
 
         map<json> mj = <map<json>> jsonResult;
         map<json> user = <map<json>> mj.get("claims");
