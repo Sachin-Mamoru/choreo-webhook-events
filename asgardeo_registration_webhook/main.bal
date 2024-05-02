@@ -46,7 +46,7 @@ service asgardeo:RegistrationService on webhookListener {
         string mobile = <string>userClaims["http://wso2.org/claims/mobile"];
 
         record {} leadRecord = {
-            "Company": check event.eventData.toJson().userName,
+            "Company": "WSO2",
             "Email": email,
             "FirstName": firstName,
             "LastName": lastName,
