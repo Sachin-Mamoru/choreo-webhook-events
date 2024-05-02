@@ -4,20 +4,20 @@ import ballerinax/salesforce;
 import ballerina/http;
 
 // Create Salesforce client configuration by reading from environment.
-configurable string clientId = "3MVG9WVXk15qiz1LXVcaGvsNQeTi36.LwOcKMSWRZrew6uoBnnccPtGaFuBaCd6py9QIeWwNxxEOjdoc.fjeN";
-configurable string clientSecret = "A3FBBCFD891F4990E7C5F93C59BF98A77DC843FBB1C9319D057385654EFC6573";
-configurable string refreshToken = "5Aep861iCXbTx3lghSuFmJNOdQvwTpfRk8ZLfDM02_wYKyX0gylS1vumDzIziO7nhDRYDJtFqlVfQb6VscFaSkP";
-configurable string refreshUrl = "https://wso230-dev-ed.develop.my.salesforce.com/services/oauth2/token";
-configurable string baseUrl = "https://wso230-dev-ed.develop.my.salesforce.com";
+configurable string salesforceAppClientId = ?;
+configurable string salesforceAppClientSecret = ?;
+configurable string salesforceAppRefreshToken = ?;
+configurable string salesforceAppRefreshUrl = ?;
+configurable string salesforceAppBaseUrl = ?;
 
 // Using direct-token config for client configuration
 salesforce:ConnectionConfig sfConfig = {
-    baseUrl,
+    baseUrl: salesforceAppBaseUrl,
     auth: {
-        clientId,
-        clientSecret,
-        refreshToken,
-        refreshUrl
+        clientId: salesforceAppClientId,
+        clientSecret: salesforceAppClientSecret,
+        refreshToken: salesforceAppRefreshToken,
+        refreshUrl: salesforceAppRefreshUrl
     }
 };
 
@@ -42,11 +42,9 @@ service asgardeo:RegistrationService on webhookListener {
         string lastName = <string>userClaims["http://wso2.org/claims/lastname"];
         string firstName = <string>userClaims["http://wso2.org/claims/givenname"];
         string email = <string>userClaims["http://wso2.org/claims/emailaddress"];
-        string country = <string>userClaims["http://wso2.org/claims/country"];
-        string mobile = <string>userClaims["http://wso2.org/claims/mobile"];
 
         record {} leadRecord = {
-            "Company": string `${firstName}_WSO2`,
+            "Company": string `${firstName}_${lastName}`,
             "Email": email,
             "FirstName": firstName,
             "LastName": lastName
