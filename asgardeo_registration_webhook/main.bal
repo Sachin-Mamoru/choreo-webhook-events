@@ -33,31 +33,34 @@ service asgardeo:RegistrationService on webhookListener {
         salesforce:Client baseClient = check new (sfConfig);
 
         log:printInfo(event.toJsonString());
-        log:printInfo("User Added Successfully. User ID : ");
         
+        json responseData = event.eventData.toJson();
 
-        json jsonResult = event.eventData.toJson();
-
-        map<json> mj = <map<json>> jsonResult;
-        map<json> user = <map<json>> mj.get("claims");
-
-        log:printInfo("User Name : " + <string>user["http://wso2.org/claims/lastname"]);
+        map<json> mj = <map<json>> responseData;
+        map<json> userClaims = <map<json>> mj.get("claims");
+        
+        string lastName = <string>userClaims["http://wso2.org/claims/lastname"];
+        string firstName = <string>userClaims["http://wso2.org/claims/givenname"];
+        string email = <string>userClaims["http://wso2.org/claims/emailaddress"];
+        string country = <string>userClaims["http://wso2.org/claims/country"];
+        string mobile = <string>userClaims["http://wso2.org/claims/mobile"];
 
         record {} leadRecord = {
-            "Email": check event.eventData.toJson().userName,
             "Company": check event.eventData.toJson().userName,
-            "FirstName": check event.eventData.toJson().claims,
-            "LastName": check event.eventData.toJson().userName
+            "Email": email,
+            "FirstName": firstName,
+            "LastName": lastName,
+            "Country": country,
+            "MobilePhone": mobile
         };
 
         salesforce:CreationResponse|error res = baseClient->create("Lead", leadRecord);
 
         if res is salesforce:CreationResponse {
-            log:printInfo("Account Created Successfully. Account ID : " + res.id);
+            log:printInfo("Lead Created Successfully. Lead ID : " + res.id);
         } else {
             log:printError(msg = res.message());
         }
-        log:printInfo(event.toJsonString());
     }
 
     remote function onConfirmSelfSignup(asgardeo:GenericEvent event ) returns error? {
