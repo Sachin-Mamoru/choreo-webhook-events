@@ -46,7 +46,7 @@ service asgardeo:RegistrationService on webhookListener {
         string mobile = <string>userClaims["http://wso2.org/claims/mobile"];
 
         record {} leadRecord = {
-            "Company": "WSO2",
+            "Company": string `${firstName}_WSO2`,
             "Email": email,
             "FirstName": firstName,
             "LastName": lastName,
