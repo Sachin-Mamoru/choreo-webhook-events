@@ -1,0 +1,8 @@
+[package]
+org = "sachinm"
+name = "asgardeo_registration_webhook"
+version = "0.1.0"
+distribution = "2201.3.2"
+
+[build-options]
+observabilityIncluded = true
